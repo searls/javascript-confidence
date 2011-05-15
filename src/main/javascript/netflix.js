@@ -5,13 +5,14 @@
   window.netflix = {
     sortQueue: function() {
       alphabetizeTitles();
-      $('<span class="reminder"><--  Now remember to click update!</span>').insertBefore('input[value="Update Instant Queue"]').css({'line-height':'1.3','font-size':'20px','float':'right','background-color':'red',color:'white','margin-left':'20px',display:'none'}).fadeIn(1400)
+      renderReminderToClickUpdateButton();
       $('html, body').animate({
         scrollTop: $(".reminder").offset().top - 10
       }, 200);      
     }
   };
   
+  //Alphabetizing stuff -- to be grouped somehow later.
   var alphabetizeTitles = function() {
     $.each(sortTitlesInAlphaOrder(),applyOrder);
   };
@@ -35,5 +36,31 @@
       return RIGHT_IS_GREATER;
     } 
   };
+  
+  //Reminder-rendering stuff
+  renderReminderToClickUpdateButton = function() {
+    var $reminder = prependReminder('<--  Now remember to click update!');
+    $reminder.css({
+      //Position
+      float: 'right',
+      marginLeft: '20px',
+      //Size
+      fontSize: '20px',
+      lineHeight: '1.3',
+      //Color
+      backgroundColor: 'red',
+      color: 'white'
+    });
+    fadeIn($reminder);
+  };
+  
+  var prependReminder = function(message) {
+    var $updateButton = $('input[value="Update Instant Queue"]');
+    return $('<span class="reminder">'+message+'</span>').insertBefore($updateButton);
+  };
+  
+  var fadeIn = function(node) {
+    $(node).hide().fadeIn(1400);
+  }
   
 })(jQuery)
