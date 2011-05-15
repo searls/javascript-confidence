@@ -2,13 +2,7 @@
 *  on the left side of each row. 
 *****/
 (function($){
-  $.fn.scrollWindow = function(config) {
-    $('html, body').animate({
-      scrollTop: $(this).offset().top - config.offset
-    }, config.speed);
-    return $(this);    
-  };
-  
+
   window.netflix = {
     sortQueue: function() {
       this.alphabetizeTitles();
@@ -30,23 +24,13 @@
   };
   
   var sortTitlesInAlphaOrder = function() {
-    return $('#qbody tr a.mdpLink').contents().toArray().sort(lexicalNodeComparator);
+    return $('#qbody tr a.mdpLink').lexicalSort();
   };
   
   var applyOrder = function(index,textNode) {
     var $row = $(textNode).closest('tr');
     $row.find('input.o').val(index+1);
     $row.appendTo('#qbody');
-  };
-  
-  var lexicalNodeComparator = function(left,right){ 
-    var LEFT_IS_GREATER = 1,
-        RIGHT_IS_GREATER = -1;
-    if($.trim($(left).text()) > $.trim($(right).text())) {
-      return LEFT_IS_GREATER;
-    } else {
-      return RIGHT_IS_GREATER;
-    } 
   };
   
   var prependReminder = function(message) {
@@ -71,5 +55,26 @@
   var fadeIn = function(node) {
     $(node).hide().fadeIn(1400);
   };
+  
+  $.fn.scrollWindow = function(config) {
+    $('html, body').animate({
+      scrollTop: $(this).offset().top - config.offset
+    }, config.speed);
+    return $(this);    
+  };
+  
+  $.fn.lexicalSort = function() {
+    var lexicalNodeComparator = function(left,right){ 
+      var LEFT_IS_GREATER = 1,
+          RIGHT_IS_GREATER = -1;
+      if($.trim($(left).text()) > $.trim($(right).text())) {
+        return LEFT_IS_GREATER;
+      } else {
+        return RIGHT_IS_GREATER;
+      } 
+    };
+    
+    return $(this).contents().toArray().sort(lexicalNodeComparator);
+  }
   
 })(jQuery)
