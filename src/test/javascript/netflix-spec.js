@@ -22,6 +22,10 @@ describe("netflix", function() {
       it("moves the 'Alien' HTML table row above that of 'Zoro'", function() {        
         expect($table.find('tr:first')).toHaveText($alien.text());
       });
+      
+      it("starts counting sorted rows at 1 (not zero)", function() {
+        expect($alien.find('input')).toHaveValue(1);
+      });
     });
   });
 });
