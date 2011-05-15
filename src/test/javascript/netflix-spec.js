@@ -6,7 +6,7 @@ describe("netflix", function() {
   });
   
   describe(".sortQueue", function() {
-    context("a queue with two items not in alphabetical order", function() {
+    context("a queue with 'Zoro' followed by 'Alien'", function() {
       var $zoro,$alien;
       beforeEach(function() {
         $zoro = $('<tr><td><input class="o" value="1" /><a class="mdpLink">Zoro</a></td></tr>').appendTo($table);
@@ -15,8 +15,12 @@ describe("netflix", function() {
         netflix.sortQueue();
       });
       
-      it("the item earlier in the alphabet gets assigned a lower position", function() {
+      it("assigns 'Alien' a lower position than 'Zoro'", function() {
         expect($alien.find('input').val()).toBeLessThan($zoro.find('input').val());
+      });
+      
+      it("moves the 'Alien' HTML table row above that of 'Zoro'", function() {        
+        expect($table.find('tr:first')).toHaveText($alien.text());
       });
     });
   });
