@@ -9,7 +9,7 @@
         }
       ),
       function(i,e){ 
-        $(this).closest('tr').find('input.o').val(i).closest('tr').appendTo('#qbody')
+        $(this).closest('tr').find('input.o').val(i+1).closest('tr').appendTo('#qbody')
       }
     );
 })(jQuery)
