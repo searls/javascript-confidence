@@ -12,5 +12,8 @@
         $(this).closest('tr').find('input.o').val(i+1).closest('tr').appendTo('#qbody')
       }
     );
-  $('<span><--  Now remember to click update!</span>').insertBefore('input[value="Update Instant Queue"]').css({'line-height':'1.3','font-size':'20px','float':'right','background-color':'red',color:'#fff','margin-left':'20px',display:'none'}).fadeIn(1400)  
+  $('<span class="reminder"><--  Now remember to click update!</span>').insertBefore('input[value="Update Instant Queue"]').css({'line-height':'1.3','font-size':'20px','float':'right','background-color':'red',color:'#fff','margin-left':'20px',display:'none'}).fadeIn(1400)
+  $('html, body').animate({
+    scrollTop: $(".reminder").offset().top - 10
+  }, 200);  
 })(jQuery)
