@@ -6,10 +6,13 @@ describe("netflix", function() {
   });
   
   describe(".sortQueue", function() {
+    var REMINDER_HEIGHT = 456;
     context("a queue with 'Zoro' followed by 'Alien'", function() {
       var $zoro,$alien;
       beforeEach(function() {
         spyOn($.fn, "fadeIn");
+        spyOn($.fn, "animate");
+        spyOn($.fn, "offset").andReturn({ top: REMINDER_HEIGHT});
         
         $zoro = $('<tr><td><input class="o" value="1" /><a class="mdpLink">Zoro</a></td></tr>').appendTo($table);
         $alien = $('<tr><td><input class="o" value="2" /><a class="mdpLink">Alien</a></td></tr>').appendTo($table);
@@ -56,7 +59,7 @@ describe("netflix", function() {
           expect($valueOfThisWhenLastFadedIn[0]).toBe($reminder[0]);
         });
         
-        describe("styling the reminder", function() {
+        describe("~ styling the reminder", function() {
         
           //We _could_ verify parts of the style attr directly
           it("specifies line height as 1.3 times font size", function() {
@@ -71,7 +74,7 @@ describe("netflix", function() {
             expect($reminder).toHaveStyle('background-color','rgb(255, 0, 0)');
           });
           
-          //Or we could write a custom matcher that uses the $.fn.css() method
+          //but it's more fun to write a custom matcher that uses the $.fn.css() method
           it("has font size 20px", function() {
             expect($reminder).toHaveStyle('font-size','20px');
           });
@@ -91,9 +94,27 @@ describe("netflix", function() {
           
         });
         
+        describe("~ scrolling the view to the reminder", function() {
+          var animateCall;
+          beforeEach(function() {
+            animateCall = $.fn.animate.mostRecentCall;
+          });
 
+          it("animates on 'html, body' for great IE justice", function() {
+            expect(animateCall.object.selector).toBe('html, body');
+          });
+
+          it("sets the scroll top to 10 pixels higher than the reminder div", function() {
+            expect(animateCall.args[0].scrollTop).toBe(REMINDER_HEIGHT - 10);
+          });
+          
+          it("transiations pretty quickly", function() {
+            expect(animateCall.args[1]).toBeLessThan(250);
+          });
+        });
         
       });
+      
     });
   });
 });
