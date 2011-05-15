@@ -29,6 +29,11 @@
 								<include>vendor/**/*.js</include>
 								<include>**/*.js</include>
 							</sourceIncludes>
+							<specIncludes>
+								<include>vendor/**/*.js</include>
+								<include>spec-helper.js</include>
+								<include>**/*.js</include>
+							</specIncludes>
 						</configuration>
 					</execution>
 				</executions>
