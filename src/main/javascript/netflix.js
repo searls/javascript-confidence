@@ -2,17 +2,31 @@
 *  on the left side of each row. 
 *****/
 (function($){
-  window.netflix = {
-    sortQueue: function() {
-      alphabetizeTitles();
-      var $reminder = renderReminderToClickUpdateButton();
-      scrollTo($reminder);
-    }
+  $.fn.scrollWindow = function(config) {
+    $('html, body').animate({
+      scrollTop: $(this).offset().top - config.offset
+    }, config.speed);
+    return $(this);    
   };
   
-  //Alphabetizing stuff -- to be grouped somehow later.
-  var alphabetizeTitles = function() {
-    $.each(sortTitlesInAlphaOrder(),applyOrder);
+  window.netflix = {
+    sortQueue: function() {
+      this.alphabetizeTitles();
+      var $reminder = this.renderReminderToClickUpdateButton();
+      $reminder.scrollWindow({
+        speed:200,
+        offset:10
+      });
+    }, 
+    alphabetizeTitles: function() {
+      $.each(sortTitlesInAlphaOrder(),applyOrder);
+    }, 
+    renderReminderToClickUpdateButton: function() {
+      var $reminder = prependReminder('<--  Now remember to click update!');
+      styleReminder($reminder);
+      fadeIn($reminder);
+      return $reminder;
+    }
   };
   
   var sortTitlesInAlphaOrder = function() {
@@ -35,9 +49,12 @@
     } 
   };
   
-  //Reminder-rendering stuff
-  renderReminderToClickUpdateButton = function() {
-    var $reminder = prependReminder('<--  Now remember to click update!');
+  var prependReminder = function(message) {
+    var $updateButton = $('input[value="Update Instant Queue"]');
+    return $('<span class="reminder">'+message+'</span>').insertBefore($updateButton);
+  };
+  
+  var styleReminder = function($reminder) {
     $reminder.css({
       //Position
       float: 'right',
@@ -48,24 +65,11 @@
       //Color
       backgroundColor: 'red',
       color: 'white'
-    });
-    fadeIn($reminder);
-  };
-  
-  var prependReminder = function(message) {
-    var $updateButton = $('input[value="Update Instant Queue"]');
-    return $('<span class="reminder">'+message+'</span>').insertBefore($updateButton);
-  };
+    });    
+  }
   
   var fadeIn = function(node) {
     $(node).hide().fadeIn(1400);
-  };
-  
-  //Scrolling
-  var scrollTo = function(node) {
-    $('html, body').animate({
-      scrollTop: $(node).offset().top - 10
-    }, 200);
   };
   
 })(jQuery)
