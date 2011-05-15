@@ -5,10 +5,8 @@
   window.netflix = {
     sortQueue: function() {
       alphabetizeTitles();
-      renderReminderToClickUpdateButton();
-      $('html, body').animate({
-        scrollTop: $(".reminder").offset().top - 10
-      }, 200);      
+      var $reminder = renderReminderToClickUpdateButton();
+      scrollTo($reminder);
     }
   };
   
@@ -61,6 +59,13 @@
   
   var fadeIn = function(node) {
     $(node).hide().fadeIn(1400);
-  }
+  };
+  
+  //Scrolling
+  var scrollTo = function(node) {
+    $('html, body').animate({
+      scrollTop: $(node).offset().top - 10
+    }, 200);
+  };
   
 })(jQuery)
